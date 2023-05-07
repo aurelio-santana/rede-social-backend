@@ -1,5 +1,6 @@
 package com.sysmap.socialNetwork.api;
 
+import com.sysmap.socialNetwork.services.security.IJwtService;
 import com.sysmap.socialNetwork.services.user.CreateUserRequest;
 import com.sysmap.socialNetwork.services.user.FindUserResponse;
 import com.sysmap.socialNetwork.services.user.IUserService;
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -19,6 +22,9 @@ public class UserController {
     @Autowired
     private IUserService _userService;
 
+    @Autowired
+    private IJwtService _jwtService;
+
     @PostMapping
     public ResponseEntity<String> createUser(@RequestBody CreateUserRequest request) {
         //Resposta HTTP<retorna String Id>
@@ -30,6 +36,13 @@ public class UserController {
         //            //return ResponseEntity.badRequest().body("Invalid user"); //badRequest: 404.
         //            return ResponseEntity.unprocessableEntity().body("Invalid user"); //...: 422.
         //        }
+
+        //if (!_jwtService.isValidToken(getToken(), getUserId())) {//TODO teste sintrng
+        if (!_jwtService.isValidToken(getToken(), getUserId())) {
+            System.out.println(getToken());
+            System.out.println(getUserId());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not authenticate");
+        }
 
         var response = _userService.createUser(request);
         //De fato chama o Service com o método de criação de usuário e passa os parâmetros no request
@@ -49,5 +62,21 @@ public class UserController {
     public ResponseEntity<FindUserResponse> getUserById(String userId) {
 
         return ResponseEntity.ok().body(_userService.findUserById(userId));
+    }
+
+
+
+
+
+    //TODO FAZER DE OUTRA FORMA
+    public String getToken() {
+        var jwt = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getHeader("Authorization");
+        //Pega o token de autenticação no head
+        return jwt.substring(7);
+        //remove o prefixo "Bearer " 7 caracteres
+    }
+    public String getUserId() {
+        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getHeader("RequestedBy");
+        //RequestedBy = userId como parametro no head da requisição
     }
 }

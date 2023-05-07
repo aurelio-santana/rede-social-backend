@@ -3,6 +3,7 @@ package com.sysmap.socialNetwork.services.user;
 import com.sysmap.socialNetwork.data.IUserRepository;
 import com.sysmap.socialNetwork.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -12,9 +13,22 @@ public class UserService implements IUserService {
 
     @Autowired
     private IUserRepository _userRepository;
+
+    @Autowired
+    private PasswordEncoder _passwordEncoder;
+
     public String createUser(CreateUserRequest request) {
-        var user = new User(request.name, request.email, request.password);
+        var user = new User(request.name, request.email);
         //Cria o usuário usando como modelo a Entity User
+
+        if (!_userRepository.findUserByEmail(request.email).isEmpty()) {
+            //valida no repositório se o email já existe
+            return null;
+        }
+
+        var hash = _passwordEncoder.encode(request.password);
+        //Encripta a senha
+        user.setPassword(hash);
 
         _userRepository.save(user);
         //Salvar usuário criado no Repository
@@ -36,7 +50,7 @@ public class UserService implements IUserService {
 
     }
 
-    public FindUserResponse findUserById(String userId) {
+    public FindUserResponse findUserById(String userId) { //TODO
         System.out.println("1: "+userId);
 //        System.out.println("1: "+userId);
        var newid = UUID.fromString(userId);
@@ -53,5 +67,14 @@ public class UserService implements IUserService {
 
         return response;
 
+    }
+
+    public User getUser(String email) {
+        return _userRepository.findUserByEmail(email).get();
+    }
+
+    public User getUserById(UUID id) {
+        return _userRepository.findUserById(id.toString()).get();
+        //TODO verificar porque o find está solicitando String
     }
 }
