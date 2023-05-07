@@ -20,17 +20,11 @@ public class AuthenticationController {
     private IAuthenticationService _authenticationService;
     @PostMapping
     public ResponseEntity<AuthenticateResponse> authenticate(@RequestBody AuthenticateRequest request) {
-        //Autentica o usuário
 
         try {
             return ResponseEntity.ok().body(_authenticationService.authenticate(request));
         } catch (Exception e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
-
-
-
-
-
     }
 }

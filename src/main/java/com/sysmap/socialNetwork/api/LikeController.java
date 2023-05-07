@@ -23,14 +23,12 @@ public class LikeController {
     @PutMapping("/post")
     public ResponseEntity<List<UUID>> addLikeToPost(String postId, String userId) {
         var response = _likeService.addLikeToPost(postId, userId);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/comment")
     public ResponseEntity<List<UUID>> addLikeToComment(String postId, String commentId, String userId) {
         var response = _likeService.addLikeToComment(postId, commentId, userId);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

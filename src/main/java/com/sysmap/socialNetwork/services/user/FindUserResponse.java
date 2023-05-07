@@ -2,7 +2,6 @@ package com.sysmap.socialNetwork.services.user;
 
 import java.util.UUID;
 
-//Model que retorna usuário
 public class FindUserResponse {
     public UUID id;
     public String name;

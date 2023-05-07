@@ -21,21 +21,17 @@ public class PostController {
     @PostMapping
     public ResponseEntity<String> createPost(@RequestBody CreatePostRequest request) {
         var response = _postService.createPost(request);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
-
     }
 
     @GetMapping
     public ResponseEntity<FindPostResponse> getPost(UUID id) {
-
         return ResponseEntity.ok().body(_postService.findPostById(id));
     }
 
     @PutMapping
     public ResponseEntity<String> updatePost(String postId, UpdatePostRequest request) {
         _postService.updatePost(postId, request);
-
         return ResponseEntity.ok().body("");
     }
 }
