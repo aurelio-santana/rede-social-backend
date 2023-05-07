@@ -1,0 +1,11 @@
+Observações
+
+Nunca expor a entendidade na Controller.
+Criar uma classe de validação à parte.
+Não utilizar Generic Repository
+Somente Services e Controllers acessam as Entidades e Repositórios
+Controller precisa ter no "máximo 3" linhas
+
+
+docker run -d --name db-demo -p 27017:27017 mongo
+docker run -d --name db-socialNetwork -p 27017:27017 mongo
