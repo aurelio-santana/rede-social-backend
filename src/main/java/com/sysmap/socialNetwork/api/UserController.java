@@ -4,12 +4,14 @@ import com.sysmap.socialNetwork.services.security.IJwtService;
 import com.sysmap.socialNetwork.services.user.CreateUserRequest;
 import com.sysmap.socialNetwork.services.user.FindUserResponse;
 import com.sysmap.socialNetwork.services.user.IUserService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -30,6 +32,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @GetMapping
     public ResponseEntity<FindUserResponse> getUser(String email) {
         return ResponseEntity.ok().body(_userService.findUserByEmail(email));
     }
@@ -40,5 +43,16 @@ public class UserController {
     }
     public String getUserId() {
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getHeader("RequestedBy");
+    }
+
+    @PostMapping("/photo/upload")
+    public ResponseEntity uploadPhotoProfile(@RequestParam("photo") MultipartFile photo) {
+        try {
+            _userService.uploadPhotoProfile(photo);
+            return new ResponseEntity(HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

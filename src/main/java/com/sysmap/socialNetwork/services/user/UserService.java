@@ -2,9 +2,12 @@ package com.sysmap.socialNetwork.services.user;
 
 import com.sysmap.socialNetwork.data.IUserRepository;
 import com.sysmap.socialNetwork.entities.User;
+import com.sysmap.socialNetwork.services.fileUpload.IFileUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -13,9 +16,10 @@ public class UserService implements IUserService {
 
     @Autowired
     private IUserRepository _userRepository;
-
     @Autowired
     private PasswordEncoder _passwordEncoder;
+    @Autowired
+    private IFileUploadService _fileUploadService;
 
     public String createUser(CreateUserRequest request) {
         var user = new User(request.name, request.email);
@@ -32,16 +36,9 @@ public class UserService implements IUserService {
     }
 
     public FindUserResponse findUserByEmail(String email) {
-       // método com retorno de model FindUserResponse
         var user = _userRepository.findUserByEmail(email).get();
-        //Método que faz a consulta no Repository de usuário, interface de acesso IuserRepository
-        //.get();
-
-        var response = new FindUserResponse(user.getId(), user.getName(), user.getEmail());
-        //Intancia do modelo FindUserResponse
-
+        var response = new FindUserResponse(user.getId(), user.getName(), user.getEmail(), user.getPhotoUri());
         return response;
-
     }
 
     public User getUser(String email) {
@@ -50,5 +47,25 @@ public class UserService implements IUserService {
 
     public User getUserById(UUID id) {
         return _userRepository.findUserById(id).get();
+    }
+
+
+
+
+
+    public void uploadPhotoProfile(MultipartFile photo) throws Exception {
+        var user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        var photoUri = "";
+
+        try {
+            var fileName = user.getId() + "." + photo.getOriginalFilename().substring(photo.getOriginalFilename().lastIndexOf(".") + 1);
+            photoUri = _fileUploadService.upload(photo, fileName);
+
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+
+        user.setPhotoUri(photoUri);
+        _userRepository.save(user);
     }
 }
