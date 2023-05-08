@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -50,7 +51,9 @@ public class UserService implements IUserService {
     }
 
 
-
+    public List<User> getUsers(String email) {
+        return _userRepository.findAll();
+    }
 
 
     public void uploadPhotoProfile(MultipartFile photo) throws Exception {

@@ -34,4 +34,9 @@ public class PostController {
         _postService.updatePost(postId, request);
         return ResponseEntity.ok().body("");
     }
+
+//    @GetMapping
+//    public ResponseEntity<FindPostResponse> Feed(UUID id) {
+//        return ResponseEntity.ok().body(_postService.findPostById(id));
+//    }
 }

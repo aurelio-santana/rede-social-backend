@@ -3,6 +3,7 @@ package com.sysmap.socialNetwork.services.user;
 import com.sysmap.socialNetwork.entities.User;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface IUserService {
@@ -11,4 +12,5 @@ public interface IUserService {
     User getUserById(UUID userId);
     User getUser(String email);
     void uploadPhotoProfile(MultipartFile photo) throws Exception;
+    List<User> getUsers(String email);
 }

@@ -1,5 +1,6 @@
 package com.sysmap.socialNetwork.api;
 
+import com.sysmap.socialNetwork.entities.User;
 import com.sysmap.socialNetwork.services.security.IJwtService;
 import com.sysmap.socialNetwork.services.user.CreateUserRequest;
 import com.sysmap.socialNetwork.services.user.FindUserResponse;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -36,6 +39,14 @@ public class UserController {
     public ResponseEntity<FindUserResponse> getUser(String email) {
         return ResponseEntity.ok().body(_userService.findUserByEmail(email));
     }
+
+    @GetMapping("/feed")
+    public ResponseEntity<List<User>> getUsers(String email) {
+        var response = ResponseEntity.ok().body(_userService.getUsers(email));
+        return response;
+    } //TODO TERMINAR
+
+
 
     public String getToken() {
         var jwt = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getHeader("Authorization");
