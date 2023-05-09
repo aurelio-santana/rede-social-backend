@@ -47,13 +47,8 @@ public class PostController {
     }
 
     @GetMapping("/feed")
-    public ResponseEntity<List<Post>> feed(String userId){
+    public ResponseEntity<List<List<Post>>> feed(String userId){
         var response = ResponseEntity.ok().body(_postService.feed(userId));
         return response;
     }
-
-//    @GetMapping
-//    public ResponseEntity<FindPostResponse> Feed(UUID id) {
-//        return ResponseEntity.ok().body(_postService.findPostById(id));
-//    }
 }

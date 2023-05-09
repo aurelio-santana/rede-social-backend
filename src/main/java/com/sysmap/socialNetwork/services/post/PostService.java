@@ -12,6 +12,8 @@ import com.sysmap.socialNetwork.services.like.LikeAndUnlikePostRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -54,15 +56,15 @@ public class PostService implements IPostService {
         return response;
     }
 
-//    public List<Post> feed(String userId){
-//        var ze = UUID.fromString(userId);
-//        var post = _postRepository.findAll().contains(ze);
-//        var x = post;
-//        var follow = _followServce.getFollowerListByUserId(userId);
-//
-//
-//        return null;
-//    } //TODO TERMINAR...
+    public List<List<Post>> feed(String userId){
+        var userIdUUID = UUID.fromString(userId);
+        var follow = _followServce.getFollowerListByUserId(userIdUUID);
+
+        List<List<Post>> posts = new ArrayList<>();
+        follow.getFollowing().forEach(id -> posts.add(_postRepository.findPostByUserId(id).get()));
+        posts.removeIf(p -> p.isEmpty());
+        return posts;
+    } //TODO TERMINAR...
 
     public String createComment(CreateCommentRequest request) {
         var post = _postRepository.findPostById(request.postId).get();

@@ -92,7 +92,7 @@ public class FollowService implements IFollowService {
         return _followRepository.findAll();
     }
 
-//    public List<Follow> getFollowerListByUserId(String userId) {
+    public Follow getFollowerListByUserId(UUID userId) {
 //        var ze = UUID.fromString(userId);
 //        var follow = _followRepository.findAll().stream().toList();
 //        System.out.println(follow);
@@ -104,9 +104,10 @@ public class FollowService implements IFollowService {
 //        var n = _followRepository.equals(userId);
 //
 //        Follow f = new Follow(UUID.fromString(userId));
-//
-//
-//
-//        return follow;
-//    } //TODO TERMINAR...
+//         var follow = 0;
+       // System.out.println(follow);
+
+        return _followRepository.getFollowerListByUserId(userId).get();
+
+    } //TODO TERMINAR...
 }

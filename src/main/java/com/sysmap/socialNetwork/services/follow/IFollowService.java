@@ -9,5 +9,5 @@ public interface IFollowService {
 
     String followUser(FollowUserRequest request);
     List<Follow> getAllFollows();
-    //List<Follow> getFollowerListByUserId(String userId);
+    Follow getFollowerListByUserId(UUID userId);
 }
