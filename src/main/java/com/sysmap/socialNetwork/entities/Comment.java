@@ -13,6 +13,7 @@ public class Comment {
     private UUID userId;
     private String content;
     private List<UUID> like;
+    private Integer likes;
 
     public Comment(UUID postId, UUID userId, String content) {
         this.setId();
@@ -20,6 +21,7 @@ public class Comment {
         this.userId = userId;
         this.content = content;
         this.like = new ArrayList<>();
+        this.likes = 0;
     }
 
     protected void setId() {

@@ -11,19 +11,19 @@ public class Post {
 
     private UUID id;
     private String content;
-    private Integer likes;
     private UUID userId;
     private List<Comment> comment;
     private List<UUID> like;
+    private Integer likes;
     //TODO private date datePost;
 
-    public Post(String content, Integer likes, UUID userId) {
+    public Post(String content, UUID userId) {
         this.setId();
         this.content = content;
-        this.likes = likes;
         this.userId = userId;
         this.comment = new ArrayList<>();
         this.like = new ArrayList<>();
+        this.likes = 0;
     }
 
     protected void setId() {

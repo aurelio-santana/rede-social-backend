@@ -8,10 +8,10 @@ import java.util.UUID;
 
 @Data
 public class Follow {
-    private UUID id; //id para evitar gerar duplicata
+    private UUID id;
     private UUID userId;
-    private List<UUID> following; //seguindo
-    private List<UUID> followers; //seguidores
+    private List<UUID> following;
+    private List<UUID> followers;
 
     public Follow(UUID userId) {
         this.setId();

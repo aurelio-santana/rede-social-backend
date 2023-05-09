@@ -16,8 +16,8 @@ public interface IPostService {
     String updatePost(String postId, UpdatePostRequest request);
     String deletePost(String postId);
     FindPostResponse findPostById(UUID id);
-    List<Post> getAllPosts();
-    List<List<Post>> feed(String userId);
+    FindAllPostsResponse getAllPosts();
+    FeedResponse feed(String userId);
     String createComment(CreateCommentRequest request);
     String updateComment(UpdateCommentRequest request);
     String deleteComment(DeleteCommentRequest request);

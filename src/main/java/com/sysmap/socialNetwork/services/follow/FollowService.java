@@ -3,11 +3,9 @@ package com.sysmap.socialNetwork.services.follow;
 import com.sysmap.socialNetwork.data.IFollowRepository;
 import com.sysmap.socialNetwork.entities.Follow;
 import com.sysmap.socialNetwork.services.user.IUserService;
-import com.sysmap.socialNetwork.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -18,12 +16,13 @@ public class FollowService implements IFollowService {
     @Autowired
     private IUserService _userServce;
 
+    //Como recomendado, documentação em casos de lógicas complexas.
 
-    //MÉTODO QUE MANIPULA OS 3 EVENTOS DE FOLLOW DAS 2 LISTAS
-    //1. SEGUIR E DESSEGUIR DA LISTA SEGUINDO (following)
-    //2. SEGUIDO DA LISTA SEGUIDORES (follower)
+    //O método followAndUnfollowUser manipula os 3 eventos de follow das 2 listas.
+    //1. Seguir e Desseguir da lista Seguindo (following).
+    //2. Seguido da lista Seguidores (follower).
 
-    public String followUser(FollowUserRequest request) {
+    public String followAndUnfollowUser(FollowUserRequest request) {
 
         var user = _userServce.getUserById(request.userId);
         var userFollowed = _userServce.getUserById(request.userIdToFollow);
@@ -35,49 +34,50 @@ public class FollowService implements IFollowService {
         var repo = _followRepository.findAll();
         var followingList = repo.stream().filter(userId -> userId.getUserId().equals(request.userId))
                 .findFirst().orElse(null);
-        //Filtra o repositório com base no Id, UsuarioSeguidor
-        //Se o filtro não encontrar registros, coloca null
+        //Filtra o repositório com base no Id, UsuarioSeguidor.
+        //Se o filtro não encontrar registros, coloca null.
 
         var followersList = repo.stream().filter(userId -> userId.getUserId().equals(request.userIdToFollow))
                 .findFirst().orElse(null);
-        //Filtra o repositório com base no Id, UsuarioASerSeguido
-        //Se o filtro não encontrar registros, coloca null
+        //Filtra o repositório com base no Id, UsuarioASerSeguido.
+        //Se o filtro não encontrar registros, coloca null.
 
 
-        if (!(followingList == null)) { //Verifica se esse usuário já tem registro de Seguindo, se não é vazia
+        if (!(followingList == null)) { //Verifica se esse usuário já "tem" lista de "Seguindo", se a lista dele "Não" é vazia.
             var userToFollowed = followingList.getFollowing().stream().filter(followed -> followed.equals(request.userIdToFollow))
                     .findFirst().orElse(null);
             //Verfica na lista Seguindo, se já segue o usuário a ser seguido, se contem o id informado.
 
 
             if (userToFollowed == null) { //Se não segue.
-                followingList.getFollowing().add(userFollowed.getId()); //follow
+                followingList.getFollowing().add(userFollowed.getId()); //Follow, seguiu.
 
 
-                if (!(followersList == null)) { //Verifica se esse usuário já tem registro de Seguidores, se não é vazia
-                    followersList.getFollowers().add(request.userId); //follow
+                if (!(followersList == null)) { //Verifica se esse usuário já tem lista de "Seguidores", se não é vazia.
+                    followersList.getFollowers().add(request.userId); //Followed, foi seguido.
 
-                } else { //Se usuário nunca recebeu registros, se é vazia
-                    var newFollowerList = new Follow(request.userIdToFollow); //Cria a lista pela primeira vez
-                    newFollowerList.getFollowers().add(request.userId); //follow
+                } else { //Usuário não tem lista de "Seguidores", sua lista é vazia.
+                    var newFollowerList = new Follow(request.userIdToFollow); //Cria a lista pela primeira vez.
+                    newFollowerList.getFollowers().add(request.userId); //Followed, foi seguido.
                     followersList = newFollowerList;
                 }
 
 
             } else { //Se já segue.
-                followingList.getFollowing().remove(request.userIdToFollow); //unfollow
-                followersList.getFollowers().remove(request.userId); //remove o user que deu unfollow da lista de seguidores
+                followingList.getFollowing().remove(request.userIdToFollow); //Unfollow, deixa de seguir.
+                followersList.getFollowers().remove(request.userId); //Remove o user que deu unfollow da lista de Seguidores.
             }
 
 
-        } else { //Se usuário nunca recebeu registros
-            var newFollowingList = new Follow(request.userId); //Cria a lista pela primeira vez
+        } else { //Usuário não tem lista de "Seguindo", sua lista é vazia.
+            var newFollowingList = new Follow(request.userId); //Cria a lista pela primeira vez.
 
-            newFollowingList.getFollowing().add(userFollowed.getId()); //follow
+            newFollowingList.getFollowing().add(userFollowed.getId()); //Follow, seguiu.
 
-            var newFollowerList = new Follow(request.userIdToFollow); //Cria a lista pela primeira vez
+            //Usuário não tem lista de "Seguidores", sua lista é vazia.
+            var newFollowerList = new Follow(request.userIdToFollow); //Cria a lista pela primeira vez.
             newFollowerList.getFollowers().add(request.userId);
-            //Adiciona o usuário seguidor (userId) na lista de seguidores do usuário que seguido (userIdToFollow).
+            //Adiciona o usuário seguidor (userId) na lista de seguidores do usuário a ser seguido (userIdToFollow).
 
             followingList = newFollowingList;
             followersList = newFollowerList;
@@ -88,26 +88,12 @@ public class FollowService implements IFollowService {
         return user.getId().toString();
     }
 
-    public List<Follow> getAllFollows(){
-        return _followRepository.findAll();
+    public GetAllFollowsResponse getAllFollows(){
+        var response = new GetAllFollowsResponse(_followRepository.findAll());
+        return response;
     }
 
     public Follow getFollowerListByUserId(UUID userId) {
-//        var ze = UUID.fromString(userId);
-//        var follow = _followRepository.findAll().stream().toList();
-//        System.out.println(follow);
-//        var x = _followRepository.findAll().stream().filter(f -> follow.contains(ze));
-//        System.out.println(x);
-//        var y = _followRepository.findAll().stream().filter(f -> follow.equals(ze));
-//        System.out.println(y);
-//        var jj = _followRepository.findAll();
-//        var n = _followRepository.equals(userId);
-//
-//        Follow f = new Follow(UUID.fromString(userId));
-//         var follow = 0;
-       // System.out.println(follow);
-
         return _followRepository.getFollowerListByUserId(userId).get();
-
-    } //TODO TERMINAR...
+    }
 }

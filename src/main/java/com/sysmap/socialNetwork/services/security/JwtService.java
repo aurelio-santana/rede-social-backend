@@ -48,6 +48,7 @@ public class JwtService implements IJwtService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+
         return claimsResolver.apply(claims);
     }
 

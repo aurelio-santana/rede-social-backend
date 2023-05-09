@@ -11,17 +11,15 @@ public class AuthenticationService implements IAuthenticationService {
 
     @Autowired
     private IUserService _userService;
-
     @Autowired
     private IJwtService _jwtService;
-
     @Autowired
     private PasswordEncoder _passwordEncoder;
 
     public AuthenticateResponse authenticate(AuthenticateRequest request) throws Exception {
         var user = _userService.getUser(request.email);
 
-        if (user == null) { //verifica se é nulo
+        if (user == null) {
             return null;
         }
         if (!_passwordEncoder.matches(request.password, user.getPassword())) {
@@ -36,5 +34,4 @@ public class AuthenticationService implements IAuthenticationService {
 
         return response;
     }
-
 }

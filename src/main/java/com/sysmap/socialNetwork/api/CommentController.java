@@ -1,4 +1,5 @@
 package com.sysmap.socialNetwork.api;
+
 import com.sysmap.socialNetwork.services.comment.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,19 +13,19 @@ public class CommentController {
     @Autowired
     private ICommentService _commentService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<String> createComment(@RequestBody CreateCommentRequest request) {
         var response = _commentService.createComment(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PutMapping
+    @PutMapping("/update")
     public ResponseEntity<String> updateComment(@RequestBody UpdateCommentRequest request) {
         var response = _commentService.updateComment(request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/delete")
     public ResponseEntity<String> deleteComment(@RequestBody DeleteCommentRequest request) {
         var response = _commentService.deleteComment(request);
         return ResponseEntity.status(HttpStatus.OK).body(response);

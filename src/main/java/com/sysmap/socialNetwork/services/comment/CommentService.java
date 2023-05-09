@@ -16,7 +16,6 @@ public class CommentService implements ICommentService {
 
     public String updateComment(UpdateCommentRequest request) {
         return _postService.updateComment(request);
-
     }
 
     public String deleteComment(DeleteCommentRequest request) {

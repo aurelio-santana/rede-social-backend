@@ -1,6 +1,5 @@
 package com.sysmap.socialNetwork.services.fileUpload;
 
-//import com.amazonaws.services.macie2.model.AwsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

@@ -1,7 +1,4 @@
 package com.sysmap.socialNetwork.services.user;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class FindUserResponse {
@@ -15,10 +12,5 @@ public class FindUserResponse {
         this.name = name;
         this.email = email;
         this.photoUri = photoUri;
-
-
     }
-
-
-
 }

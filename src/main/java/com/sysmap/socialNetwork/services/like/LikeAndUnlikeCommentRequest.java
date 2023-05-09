@@ -10,7 +10,6 @@ public class LikeAndUnlikeCommentRequest {
     public UUID commentId;
     public UUID userId;
 
-
     public LikeAndUnlikeCommentRequest(UUID postId, UUID commentId, UUID userId) {
         this.postId = postId;
         this.commentId = commentId;

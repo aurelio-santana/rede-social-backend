@@ -9,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -36,12 +35,12 @@ public class UserService implements IUserService {
         return user.getId().toString();
     }
 
-    public String updateUser(String userId, CreateUserRequest request) {
+    public String updateUser(UpdateUserRequest request) {
 
         if (!_userRepository.findUserByEmail(request.email).isEmpty()) {
             return null;
         }
-        var user = _userRepository.findUserById(UUID.fromString(userId)).get();
+        var user = _userRepository.findUserById(request.userId).get();
         var hash = _passwordEncoder.encode(request.password);
         user.setName(request.getName());
         user.setEmail(request.getEmail());
@@ -57,8 +56,9 @@ public class UserService implements IUserService {
         return user.getId().toString();
     }
 
-    public List<User> getAllUsers() {
-        return _userRepository.findAll();
+    public FindAllUsersResponse getAllUsers() {
+        var response = new FindAllUsersResponse(_userRepository.findAll());
+        return  response;
     }
 
     public User getUser(String email) {

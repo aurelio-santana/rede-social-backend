@@ -9,7 +9,6 @@ public class LikeAndUnlikePostRequest {
     public UUID postId;
     public UUID userId;
 
-
     public LikeAndUnlikePostRequest(UUID postId, UUID userId) {
         this.postId = postId;
         this.userId = userId;
