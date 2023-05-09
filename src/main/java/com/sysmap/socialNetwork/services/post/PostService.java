@@ -2,6 +2,13 @@ package com.sysmap.socialNetwork.services.post;
 import com.sysmap.socialNetwork.data.IPostRepository;
 import com.sysmap.socialNetwork.entities.Comment;
 import com.sysmap.socialNetwork.entities.Post;
+import com.sysmap.socialNetwork.entities.User;
+import com.sysmap.socialNetwork.services.comment.CreateCommentRequest;
+import com.sysmap.socialNetwork.services.comment.DeleteCommentRequest;
+import com.sysmap.socialNetwork.services.comment.UpdateCommentRequest;
+import com.sysmap.socialNetwork.services.follow.IFollowService;
+import com.sysmap.socialNetwork.services.like.LikeAndUnlikeCommentRequest;
+import com.sysmap.socialNetwork.services.like.LikeAndUnlikePostRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +19,33 @@ import java.util.UUID;
 public class PostService implements IPostService {
 
     @Autowired
+    private IFollowService _followServce;
+
+    @Autowired
     private IPostRepository _postRepository;
+
     public String createPost(CreatePostRequest request) {
         var post = new Post(request.content, request.likes, request.userId);
         _postRepository.save(post);
         return post.getId().toString();
+    }
+
+    public String updatePost(String postId, UpdatePostRequest request) {
+        var post = _postRepository.findPostById(UUID.fromString(postId)).get();
+        post.setContent(request.content);
+
+        _postRepository.save(post);
+        return post.getId().toString();
+    }
+
+    public String deletePost(String postId) {
+        var post = _postRepository.findPostById(UUID.fromString(postId)).get();
+        _postRepository.delete(post);
+        return post.getId().toString();
+    }
+
+    public List<Post> getAllPosts() {
+        return _postRepository.findAll();
     }
 
     public FindPostResponse findPostById(UUID id) {
@@ -25,39 +54,81 @@ public class PostService implements IPostService {
         return response;
     }
 
-    public String updatePost(String postId, UpdatePostRequest request) {
-        var post = _postRepository.findPostById(UUID.fromString(postId));
-        post.get().setContent(request.content);
-        _postRepository.save(post.get());
+//    public List<Post> feed(String userId){
+//        var ze = UUID.fromString(userId);
+//        var post = _postRepository.findAll().contains(ze);
+//        var x = post;
+//        var follow = _followServce.getFollowerListByUserId(userId);
+//
+//
+//        return null;
+//    } //TODO TERMINAR...
 
-        return post.get().getId().toString();
-    }
-
-    public void addComments(UUID postId, Comment comment) {
-        var post = _postRepository.findPostById(postId).get();
+    public String createComment(CreateCommentRequest request) {
+        var post = _postRepository.findPostById(request.postId).get();
+        var comment = new Comment(request.postId, request.userId, request.content);
         post.getComment().add(comment);
+
         _postRepository.save(post);
+        return comment.getId().toString();
     }
 
-    public List<UUID> addLikeToPost(String postId, String userId) {
-        var post = _postRepository.findPostById(UUID.fromString(postId)).get();
-        post.getLike().add(UUID.fromString(userId));
-        _postRepository.save(post);
+    public String updateComment(UpdateCommentRequest request) {
+        var post = _postRepository.findPostById(request.postId).get();
+        var comment = post.getComment().stream().filter(id -> id.getId().equals(request.commentId)).findFirst().orElse(null);
 
+        if (comment == null)
+        {
+            return null;
+        }
+        post.getComment().stream().filter(id -> id.getId().equals(request.commentId)).findFirst()
+                        .get().setContent(request.content);
+
+        _postRepository.save(post);
+        return request.commentId.toString();
+    }
+
+    public String deleteComment(DeleteCommentRequest request) {
+        var post = _postRepository.findPostById(request.postId).get();
+        var comment = post.getComment().stream().filter(id -> id.getId().equals(request.commentId)).findFirst().orElse(null);
+
+        if (comment == null)
+        {
+            return null;
+        }
+        post.getComment().remove(comment);
+
+        _postRepository.save(post);
+        return request.commentId.toString();
+    }
+
+    public List<UUID> LikeAndUnlikePost(LikeAndUnlikePostRequest request) {
+        var post = _postRepository.findPostById(request.postId).get();
+
+        if (!post.getLike().contains(request.userId)) { //like
+            post.getLike().add(request.userId);
+        } else {
+            post.getLike().remove(request.userId); //unlike
+        }
+
+        _postRepository.save(post);
         return post.getLike();
     }
 
-    public List<UUID> addLikeToComment(String postId, String commentId, String userId) {
-        UUID postIdUUID = UUID.fromString(postId);
-        UUID commentIdUUID = UUID.fromString(commentId);
-        UUID userIdUUID = UUID.fromString(userId);
+    public List<UUID> LikeAndUnlikeComment(LikeAndUnlikeCommentRequest request) {
+        var post = _postRepository.findPostById(request.postId).get();
 
-        var post = _postRepository.findPostById(postIdUUID).get();
+        if (!post.getComment().stream().filter(comment -> comment.getId().equals(request.commentId)).findFirst()
+                .get().getLike().contains(request.userId)) {
 
-        post.getComment().stream().filter(comment -> comment.getId().equals(commentIdUUID)).findFirst()
-                .get().getLike().add(userIdUUID);
-
+            post.getComment().stream().filter(comment -> comment.getId().equals(request.commentId)).findFirst()
+                    .get().getLike().add(request.userId); //like
+        } else {
+            post.getComment().stream().filter(comment -> comment.getId().equals(request.commentId)).findFirst()
+                    .get().getLike().remove(request.userId); //unlike
+        }
         _postRepository.save(post);
-        return post.getLike();
+        return post.getComment().stream().filter(comment -> comment.getId().equals(request.commentId)).findFirst()
+                .get().getLike();
     }
 }

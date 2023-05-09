@@ -1,5 +1,5 @@
 package com.sysmap.socialNetwork.services.like;
-import com.sysmap.socialNetwork.services.post.PostService;
+import com.sysmap.socialNetwork.services.post.IPostService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,18 +8,18 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class LikeService {
+public class LikeService implements ILikeService {
 
     @Autowired
-    private PostService _postService;
+    private IPostService _postService;
 
-    public List<UUID> addLikeToPost(String postId, String userId) {
-        var response = _postService.addLikeToPost(postId, userId);
+    public List<UUID> LikeAndUnlikePost(LikeAndUnlikePostRequest request) {
+        var response = _postService.LikeAndUnlikePost(request);
         return response;
     }
 
-    public List<UUID> addLikeToComment(String postId, String commentId, String userId) {
-        var response = _postService.addLikeToComment(postId, commentId, userId);
+    public List<UUID> LikeAndUnlikeComment(LikeAndUnlikeCommentRequest request) {
+        var response = _postService.LikeAndUnlikeComment(request);
         return response;
     }
 }

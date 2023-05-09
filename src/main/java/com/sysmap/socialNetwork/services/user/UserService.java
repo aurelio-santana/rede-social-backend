@@ -36,10 +36,29 @@ public class UserService implements IUserService {
         return user.getId().toString();
     }
 
-    public FindUserResponse findUserByEmail(String email) {
-        var user = _userRepository.findUserByEmail(email).get();
-        var response = new FindUserResponse(user.getId(), user.getName(), user.getEmail(), user.getPhotoUri());
-        return response;
+    public String updateUser(String userId, CreateUserRequest request) {
+
+        if (!_userRepository.findUserByEmail(request.email).isEmpty()) {
+            return null;
+        }
+        var user = _userRepository.findUserById(UUID.fromString(userId)).get();
+        var hash = _passwordEncoder.encode(request.password);
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPassword(hash);
+
+        _userRepository.save(user);
+        return user.getId().toString();
+    }
+
+    public String deleteUser(String userId) {
+        var user = _userRepository.findUserById(UUID.fromString(userId)).get();
+        _userRepository.delete(user);
+        return user.getId().toString();
+    }
+
+    public List<User> getAllUsers() {
+        return _userRepository.findAll();
     }
 
     public User getUser(String email) {
@@ -50,11 +69,11 @@ public class UserService implements IUserService {
         return _userRepository.findUserById(id).get();
     }
 
-
-    public List<User> getUsers(String email) {
-        return _userRepository.findAll();
+    public FindUserResponse findUserByEmail(String email) {
+        var user = _userRepository.findUserByEmail(email).get();
+        var response = new FindUserResponse(user.getId(), user.getName(), user.getEmail(), user.getPhotoUri());
+        return response;
     }
-
 
     public void uploadPhotoProfile(MultipartFile photo) throws Exception {
         var user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());

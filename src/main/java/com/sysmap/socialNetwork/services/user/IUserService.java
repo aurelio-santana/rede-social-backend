@@ -8,9 +8,12 @@ import java.util.UUID;
 
 public interface IUserService {
     String createUser(CreateUserRequest request);
-    FindUserResponse findUserByEmail(String email);
-    User getUserById(UUID userId);
+    String updateUser(String userId, CreateUserRequest request);
+    String deleteUser(String userId);
+    List<User> getAllUsers();
     User getUser(String email);
+    User getUserById(UUID userId);
+    FindUserResponse findUserByEmail(String email);
     void uploadPhotoProfile(MultipartFile photo) throws Exception;
-    List<User> getUsers(String email);
+
 }

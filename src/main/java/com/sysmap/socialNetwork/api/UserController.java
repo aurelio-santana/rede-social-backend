@@ -5,7 +5,6 @@ import com.sysmap.socialNetwork.services.security.IJwtService;
 import com.sysmap.socialNetwork.services.user.CreateUserRequest;
 import com.sysmap.socialNetwork.services.user.FindUserResponse;
 import com.sysmap.socialNetwork.services.user.IUserService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,9 +39,21 @@ public class UserController {
         return ResponseEntity.ok().body(_userService.findUserByEmail(email));
     }
 
-    @GetMapping("/feed")
-    public ResponseEntity<List<User>> getUsers(String email) {
-        var response = ResponseEntity.ok().body(_userService.getUsers(email));
+    @PutMapping
+    public ResponseEntity<String> updateUser(String userId, @RequestBody CreateUserRequest request) {
+        var response = _userService.updateUser(userId, request);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteUser(String userId) {
+        var response = _userService.deleteUser(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<User>> getAllUsers() {
+        var response = ResponseEntity.ok().body(_userService.getAllUsers());
         return response;
     } //TODO TERMINAR
 

@@ -2,10 +2,12 @@ package com.sysmap.socialNetwork.services.follow;
 
 import com.sysmap.socialNetwork.data.IFollowRepository;
 import com.sysmap.socialNetwork.entities.Follow;
+import com.sysmap.socialNetwork.services.user.IUserService;
 import com.sysmap.socialNetwork.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -14,7 +16,7 @@ public class FollowService implements IFollowService {
     @Autowired
     private IFollowRepository _followRepository;
     @Autowired
-    private UserService _userServce;
+    private IUserService _userServce;
 
 
     //MÉTODO QUE MANIPULA OS 3 EVENTOS DE FOLLOW DAS 2 LISTAS
@@ -43,12 +45,12 @@ public class FollowService implements IFollowService {
 
 
         if (!(followingList == null)) { //Verifica se esse usuário já tem registro de Seguindo, se não é vazia
-            var follower = followingList.getFollowing().stream().filter(followed -> followed.equals(request.userIdToFollow))
+            var userToFollowed = followingList.getFollowing().stream().filter(followed -> followed.equals(request.userIdToFollow))
                     .findFirst().orElse(null);
             //Verfica na lista Seguindo, se já segue o usuário a ser seguido, se contem o id informado.
 
 
-            if (follower == null) { //Se não segue.
+            if (userToFollowed == null) { //Se não segue.
                 followingList.getFollowing().add(userFollowed.getId()); //follow
 
 
@@ -58,15 +60,13 @@ public class FollowService implements IFollowService {
                 } else { //Se usuário nunca recebeu registros, se é vazia
                     var newFollowerList = new Follow(request.userIdToFollow); //Cria a lista pela primeira vez
                     newFollowerList.getFollowers().add(request.userId); //follow
-                    followersList = newFollowerList; //
+                    followersList = newFollowerList;
                 }
 
 
             } else { //Se já segue.
                 followingList.getFollowing().remove(request.userIdToFollow); //unfollow
-                followersList.getFollowers().remove(request.userId); //unfollow
-//                _followRepository.deleteAll();
-               // _followRepository.delete(followList);
+                followersList.getFollowers().remove(request.userId); //remove o user que deu unfollow da lista de seguidores
             }
 
 
@@ -88,7 +88,25 @@ public class FollowService implements IFollowService {
         return user.getId().toString();
     }
 
-    public Follow findFollowListByUserId(UUID userId) {
-        return _followRepository.findById(userId).get();
+    public List<Follow> getAllFollows(){
+        return _followRepository.findAll();
     }
+
+//    public List<Follow> getFollowerListByUserId(String userId) {
+//        var ze = UUID.fromString(userId);
+//        var follow = _followRepository.findAll().stream().toList();
+//        System.out.println(follow);
+//        var x = _followRepository.findAll().stream().filter(f -> follow.contains(ze));
+//        System.out.println(x);
+//        var y = _followRepository.findAll().stream().filter(f -> follow.equals(ze));
+//        System.out.println(y);
+//        var jj = _followRepository.findAll();
+//        var n = _followRepository.equals(userId);
+//
+//        Follow f = new Follow(UUID.fromString(userId));
+//
+//
+//
+//        return follow;
+//    } //TODO TERMINAR...
 }

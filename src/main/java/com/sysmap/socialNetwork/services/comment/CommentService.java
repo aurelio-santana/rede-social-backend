@@ -1,6 +1,5 @@
 package com.sysmap.socialNetwork.services.comment;
-import com.sysmap.socialNetwork.entities.Comment;
-import com.sysmap.socialNetwork.services.post.PostService;
+import com.sysmap.socialNetwork.services.post.IPostService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,12 +8,19 @@ import org.springframework.stereotype.Service;
 public class CommentService implements ICommentService {
 
     @Autowired
-    private PostService _postService;
+    private IPostService _postService;
 
     public String createComment(CreateCommentRequest request) {
-        var comment = new Comment(request.postId, request.userId, request.content);
-        _postService.addComments(request.postId, comment);
+        return _postService.createComment(request);
+    }
 
-        return comment.getId().toString();
+    public String updateComment(UpdateCommentRequest request) {
+        return _postService.updateComment(request);
+
+    }
+
+    public String deleteComment(DeleteCommentRequest request) {
+        return _postService.deleteComment(request);
     }
 }
+
