@@ -9,13 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/follow")
+@RequestMapping("/api/v1/user/follow")
 public class FollowController {
 
     @Autowired
     private IFollowService _followService;
 
-    @PostMapping("/do")
+    @PostMapping("/following")
     public ResponseEntity<String> followAndUnfollowUser(@RequestBody FollowUserRequest request) {
         var response = _followService.followAndUnfollowUser(request);
         return ResponseEntity.status(HttpStatus.OK).body(response);

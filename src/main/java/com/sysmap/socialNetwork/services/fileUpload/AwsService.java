@@ -20,8 +20,8 @@ public class AwsService {
 
         try {
             var fileConverted = convertMultiPartToFile(multipartFile);
-            _amazonS3.putObject(new PutObjectRequest("demo-bucket", fileName, fileConverted).withCannedAcl(CannedAccessControlList.PublicRead));
-            fileUri = "http://s3.localhost.localstack.cloud:4566"+"/"+"demo-bucket"+"/"+fileName;
+            _amazonS3.putObject(new PutObjectRequest("socialnetwork-bucket", fileName, fileConverted).withCannedAcl(CannedAccessControlList.PublicRead));
+            fileUri = "http://s3.localhost.localstack.cloud:4566"+"/"+"socialnetwork-bucket"+"/"+fileName;
             fileConverted.delete();
 
         } catch (Exception e) {
