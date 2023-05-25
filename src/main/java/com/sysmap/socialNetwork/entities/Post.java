@@ -10,6 +10,7 @@ import java.util.UUID;
 public class Post {
 
     private UUID id;
+    private String title;
     private String content;
     private UUID userId;
     private List<Comment> comment;
@@ -17,8 +18,9 @@ public class Post {
     private Integer likes;
     //TODO private date datePost;
 
-    public Post(String content, UUID userId) {
+    public Post(String title, String content, UUID userId) {
         this.setId();
+        this.title = title;
         this.content = content;
         this.userId = userId;
         this.comment = new ArrayList<>();

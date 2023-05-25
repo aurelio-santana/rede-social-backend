@@ -6,6 +6,7 @@ import java.util.UUID;
 
 @Data
 public class CreatePostRequest {
+    public String title;
     public String content;
     public UUID userId;
 }

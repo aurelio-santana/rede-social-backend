@@ -25,13 +25,14 @@ public class PostService implements IPostService {
     private IPostRepository _postRepository;
 
     public String createPost(CreatePostRequest request) {
-        var post = new Post(request.content, request.userId);
+        var post = new Post(request.title, request.content, request.userId);
         _postRepository.save(post);
         return post.getId().toString();
     }
 
     public String updatePost(String postId, UpdatePostRequest request) {
         var post = _postRepository.findPostById(UUID.fromString(postId)).get();
+        post.setTitle(request.title);
         post.setContent(request.content);
 
         _postRepository.save(post);
@@ -51,7 +52,7 @@ public class PostService implements IPostService {
 
     public FindPostResponse findPostById(UUID id) {
         var post = _postRepository.findPostById(id).get();
-        var response = new FindPostResponse(post.getId(), post.getContent(), post.getLikes(), post.getUserId());
+        var response = new FindPostResponse(post.getId(), post.getTitle(), post.getContent(), post.getLikes(), post.getUserId());
         return response;
     }
 

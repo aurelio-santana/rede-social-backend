@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class UpdatePostRequest {
+    public String title;
     public String content;
 }
