@@ -18,24 +18,11 @@ public class PostController {
     @Autowired
     private IPostService _postService;
 
-//    @PostMapping("/create")
-//    public ResponseEntity<String> createPost(CreatePostRequest request,
-//                                             @RequestParam(value = "photo", required = false) List<MultipartFile> photo) {
-//        System.out.println("request"+ request);
-//        System.out.println("photo"+ photo);
-//        //var response = _postService.createPost(request, photo);
-//        //return ResponseEntity.status(HttpStatus.CREATED).body(response);
-//        return null;
-//    }
-
     @PostMapping("/create")
     public ResponseEntity<String> createPost(@RequestBody CreatePostRequest request) {
-        System.out.println("request"+ request);
-        //System.out.println("photo"+ photo);
         var response = _postService.createPost(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
 
     @PutMapping("/update")
     public ResponseEntity<String> updatePost(String postId, @RequestBody UpdatePostRequest request) {
@@ -51,7 +38,6 @@ public class PostController {
 
     @GetMapping("/get")
     public ResponseEntity<FindPostResponse> getPost(String id) {
-        System.out.println("id postbyid"+id);
         return ResponseEntity.ok().body(_postService.findPostById(id));
     }
 
@@ -63,7 +49,6 @@ public class PostController {
 
     @GetMapping("/feed")
     public ResponseEntity<FeedResponse> feed(String userId) {
-        System.out.println("userid"+userId);
         var response = ResponseEntity.ok().body(_postService.feed(userId));
         return response;
     }

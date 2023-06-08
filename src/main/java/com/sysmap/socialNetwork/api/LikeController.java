@@ -21,7 +21,6 @@ public class LikeController {
 
     @PutMapping("/{postId}/like")
     public ResponseEntity<List<UUID>> LikeAndUnlikePost(@PathVariable String postId, @RequestParam("userId") LikeAndUnlikePostRequest request) {
-        System.out.println("passou auqi");
         var response = _likeService.LikeAndUnlikePost(postId, request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

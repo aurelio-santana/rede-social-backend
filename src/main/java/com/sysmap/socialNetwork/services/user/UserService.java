@@ -83,14 +83,13 @@ public class UserService implements IUserService {
 
     public FindAllUsersFollowResponse getAllUsersWithFollow() {
         var allUsers = new FindAllUsersResponse(_userRepository.findAll());
-        ///////////////var allFollows = _followService.getAllFollows();
+        //////var allFollows = _followService.getAllFollows();
         Object[] join = new Object[0];
         join = ArrayUtils.addAll(join, allUsers);
-        ////////////////join = ArrayUtils.addAll(join, allFollows);
+        //////join = ArrayUtils.addAll(join, allFollows);
         //allUsers.users.stream().map(user -> user.getId().)
 
         List<FindAllUsersFollowResponse> teste = new ArrayList<>();
-
 
 //        var response = new FindAllUsersFollowResponse(
 //                allUsers.users.
@@ -99,21 +98,16 @@ public class UserService implements IUserService {
     }
 
     public void uploadPhotoProfile(MultipartFile photo) throws Exception {
-        //var user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        var user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         var photoUri = "";
 
         try {
-            var fileName = "nome" + "." + photo.getOriginalFilename().substring(photo.getOriginalFilename().lastIndexOf(".") + 1);
+            var fileName = user.getId() + "." + photo.getOriginalFilename().substring(photo.getOriginalFilename().lastIndexOf(".") + 1);
             photoUri = _fileUploadService.upload(photo, fileName);
-            System.out.println("photouri :"+photoUri);
-            System.out.println("photouri :"+photoUri);
-            System.out.println("photouri :"+photoUri);
-
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
-
-        //user.setPhotoUri(photoUri);
-        //_userRepository.save(user);
+        user.setPhotoUri(photoUri);
+        _userRepository.save(user);
     }
 }

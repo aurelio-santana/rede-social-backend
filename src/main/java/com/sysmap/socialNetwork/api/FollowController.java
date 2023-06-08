@@ -23,8 +23,6 @@ public class FollowController {
 
     @PostMapping("/following")
     public ResponseEntity<String> followAndUnfollowUser(@RequestBody FollowUserRequest request) {
-        System.out.println("userid"+request.userId);
-        System.out.println("usertofollow"+request.userIdToFollow);
         var response = _followService.followAndUnfollowUser(request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
@@ -37,11 +35,6 @@ public class FollowController {
 
     @GetMapping("/get/id")
     public ResponseEntity<GetFollowsListByUserId> getFollowListByUserId(String userId) {
-//        var followerList = _followService.getFollowerListByUserId(UUID.fromString(userId));
-//        var followingList = _followService.getFollowingListByUserId(UUID.fromString(userId));
-//        List response = new ArrayList();
-//        response.add(followerList);
-//        response.add(followingList);
         var response = _followService.getFollowsListByUserId(UUID.fromString(userId));
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

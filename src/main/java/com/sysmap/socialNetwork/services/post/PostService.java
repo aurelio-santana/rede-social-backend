@@ -36,71 +36,12 @@ public class PostService implements IPostService {
     @Autowired
     private IFileUploadService _fileUploadService;
 
-    //public String createPost(CreatePostRequest request, List<MultipartFile> photo) {
     public String createPost(CreatePostRequest request) {
         var name = _userRepository.getUserById(request.userId).getName();
         var post = new Post(request.title, request.content, request.userId, name, LocalDateTime.now());
-        //_postRepository.save(post);
 
-
-//        var photoUri = "";
-//
-//        try {
-//            var fileName = post.getId() + "." + photo.getOriginalFilename().substring(photo.getOriginalFilename().lastIndexOf(".") + 1);
-//            photoUri = _fileUploadService.upload(photo, fileName);
-//
-//        } catch (Exception e) {
-//            throw new Exception(e.getMessage());
-//        }
-//        var fileName = "";
-        //post.getPhotoUri().add("ds");
-        //photo(file -> posts.add(_postRepository.findPostByUserId(id).get()));
-        //photo(file -> post.getPhotoUri().add("ds"));
-
-//        photo(file -> fileName = post.getId() + "." + photo.get(file).getOriginalFilename().substring(photo.getOriginalFilename().lastIndexOf(".") + 1);
-//        posts.removeIf(p -> p.isEmpty());
         List<String> fileNames = new ArrayList<>();
         List<String> photoUri = new ArrayList<>();
-        List<MultipartFile> Names = new ArrayList<>();
-        MultipartFile file;
-        System.out.println("passou aqui");
-
-
-
-
-//        Arrays.stream(photo).map(file -> fileNames.add(
-//                post.getId() + "." +  file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1)
-//        ));
-        //file = photo.get(0);
-        //System.out.println("agora: "+post.getId() + "." + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1));
-        //Names.add(post.getId() + "." +  photo.get(0).getOriginalFilename().substring(photo.get(0).getOriginalFilename().lastIndexOf(".") + 1));
-
-
-       // Number count = 0;
-//        photo.stream().map(multipartFile -> fileNames.add(
-//                post.getId() + "." + multipartFile + multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf(".") + 1)
-//        ));
-        //Arrays teste[];
-
-
-
-
-
-
-
-
-//        fileNames = photo.stream().map(multipartFile -> post.getId() + "-" + photo.indexOf(multipartFile) + "." +
-//                        multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf(".") + 1)).
-//                        collect(Collectors.toList());
-//
-//        fileNames.forEach(fileName -> photoUri.add(_fileUploadService.upload(photo.listIterator().next(), fileName)));
-//        System.out.println("filenames :"+fileNames);
-//        System.out.println("photouri :"+photoUri);
-//
-//        post.setPhotoUri(photoUri);
-//        _postRepository.save(post);
-
-
 
         if (request.fileList != null) {
             fileNames = request.fileList.stream().map(multipartFile -> post.getId() + "-" + request.fileList.indexOf(multipartFile) + "." +
@@ -108,40 +49,9 @@ public class PostService implements IPostService {
                     collect(Collectors.toList());
 
             fileNames.forEach(fileName -> photoUri.add(_fileUploadService.upload(request.fileList.listIterator().next(), fileName)));
-            System.out.println("filenames :"+fileNames);
-            System.out.println("photouri :"+photoUri);
-
             post.setPhotoUri(photoUri);
-
         }
-
         _postRepository.save(post);
-
-
-
-
-
-
-
-
-
-
-
-
-
-//        try {
-//            fileNames = Arrays.stream(photo)
-//                    .map(MultipartFile::getOriginalFilename)
-//                    .
-//            return ResponseEntity.status(HttpStatus.OK).body(fileNames);
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Unable to download files");
-//        }
-
-
-
-
-
         return post.getId().toString();
     }
 
@@ -187,13 +97,6 @@ public class PostService implements IPostService {
     }
 
     public String createComment(String postId, CreateCommentRequest request) {
-//        var post = _postRepository.findPostById(request.postId).get();
-//        var comment = new Comment(request.postId, request.userId, request.content);
-//        post.getComment().add(comment);
-//
-//        _postRepository.save(post);
-//        return comment.getId().toString();
-
         var name = _userRepository.getUserById(request.userId).getName();
         System.out.println("name :"+ name);
         System.out.println("date :"+ LocalDateTime.now());
@@ -235,19 +138,6 @@ public class PostService implements IPostService {
     }
 
     public List<UUID> LikeAndUnlikePost(String postId, LikeAndUnlikePostRequest request) {
-//        var post = _postRepository.findPostById(request.postId).get();
-//
-//        if (!post.getLike().contains(request.userId)) {
-//            post.getLike().add(request.userId);
-//            post.setLikes(post.getLikes()+1);
-//        } else {
-//            post.getLike().remove(request.userId);
-//            post.setLikes(post.getLikes()-1);
-//        }
-//
-//        _postRepository.save(post);
-//        return post.getLike();
-
         var post = _postRepository.findPostById(UUID.fromString(postId)).get();
         System.out.println("userid"+ request.userId);
         if (!post.getLike().contains(UUID.fromString(request.userId))) {

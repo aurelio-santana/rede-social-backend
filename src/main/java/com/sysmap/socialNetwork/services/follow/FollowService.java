@@ -94,7 +94,6 @@ public class FollowService implements IFollowService {
     }
 
     public GetFollowsListByUserId getFollowsListByUserId(UUID userId) {
-
         if (_followRepository.getFollowerListByUserId(userId).isEmpty()) {
             var initializeFollowList = new Follow(userId);
             _followRepository.save(initializeFollowList);
@@ -103,7 +102,6 @@ public class FollowService implements IFollowService {
         }
 
         var response = new GetFollowsListByUserId(_followRepository.getFollowerListByUserId(userId).get());
-        //return _followRepository.getFollowerListByUserId(userId).get();
         return response;
     }
 
