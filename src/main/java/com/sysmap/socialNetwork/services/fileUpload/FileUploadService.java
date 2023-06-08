@@ -14,6 +14,8 @@ public class FileUploadService implements IFileUploadService {
         var fileUri = "";
 
         try {
+            System.out.println("file :"+ file);
+            System.out.println("name :"+ fileName);
             fileUri = _awsService.upload(file, fileName);
         } catch (Exception e) {
         }

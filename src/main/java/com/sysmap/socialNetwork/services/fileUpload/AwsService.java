@@ -19,6 +19,8 @@ public class AwsService {
         var fileUri = "";
 
         try {
+            //socialnetwork-bucket
+            //demo-bucket
             var fileConverted = convertMultiPartToFile(multipartFile);
             _amazonS3.putObject(new PutObjectRequest("socialnetwork-bucket", fileName, fileConverted).withCannedAcl(CannedAccessControlList.PublicRead));
             fileUri = "http://s3.localhost.localstack.cloud:4566"+"/"+"socialnetwork-bucket"+"/"+fileName;

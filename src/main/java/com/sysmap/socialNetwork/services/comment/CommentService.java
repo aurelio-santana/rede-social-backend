@@ -10,8 +10,8 @@ public class CommentService implements ICommentService {
     @Autowired
     private IPostService _postService;
 
-    public String createComment(CreateCommentRequest request) {
-        return _postService.createComment(request);
+    public String createComment(String postId, CreateCommentRequest request) {
+        return _postService.createComment(postId, request);
     }
 
     public String updateComment(UpdateCommentRequest request) {

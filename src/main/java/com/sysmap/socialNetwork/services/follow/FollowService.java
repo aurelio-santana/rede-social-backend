@@ -93,7 +93,21 @@ public class FollowService implements IFollowService {
         return response;
     }
 
-    public Follow getFollowerListByUserId(UUID userId) {
-        return _followRepository.getFollowerListByUserId(userId).get();
+    public GetFollowsListByUserId getFollowsListByUserId(UUID userId) {
+
+        if (_followRepository.getFollowerListByUserId(userId).isEmpty()) {
+            var initializeFollowList = new Follow(userId);
+            _followRepository.save(initializeFollowList);
+            var response = new GetFollowsListByUserId(initializeFollowList);
+            return response;
+        }
+
+        var response = new GetFollowsListByUserId(_followRepository.getFollowerListByUserId(userId).get());
+        //return _followRepository.getFollowerListByUserId(userId).get();
+        return response;
     }
+
+//    public Follow getFollowingListByUserId(UUID userId) {
+//        return _followRepository.getFollowingListByUserId(userId).get();
+//    }
 }

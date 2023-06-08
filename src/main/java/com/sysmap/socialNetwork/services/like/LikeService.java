@@ -13,8 +13,8 @@ public class LikeService implements ILikeService {
     @Autowired
     private IPostService _postService;
 
-    public List<UUID> LikeAndUnlikePost(LikeAndUnlikePostRequest request) {
-        var response = _postService.LikeAndUnlikePost(request);
+    public List<UUID> LikeAndUnlikePost(String postId, LikeAndUnlikePostRequest request) {
+        var response = _postService.LikeAndUnlikePost(postId, request);
         return response;
     }
 

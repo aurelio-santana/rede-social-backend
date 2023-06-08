@@ -6,11 +6,11 @@ import java.util.UUID;
 
 @Data
 public class LikeAndUnlikePostRequest {
-    public UUID postId;
-    public UUID userId;
+    //public UUID postId;
+    public String userId;
 
-    public LikeAndUnlikePostRequest(UUID postId, UUID userId) {
-        this.postId = postId;
+    public LikeAndUnlikePostRequest(String userId) {
+        //this.postId = postId;
         this.userId = userId;
     }
 }

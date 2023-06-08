@@ -5,6 +5,6 @@ import java.util.UUID;
 
 public interface ILikeService {
 
-    List<UUID> LikeAndUnlikePost(LikeAndUnlikePostRequest request);
+    List<UUID> LikeAndUnlikePost(String postId, LikeAndUnlikePostRequest request);
     List<UUID> LikeAndUnlikeComment(LikeAndUnlikeCommentRequest request);
 }

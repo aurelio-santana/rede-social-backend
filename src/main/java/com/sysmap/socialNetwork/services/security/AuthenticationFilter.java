@@ -6,21 +6,20 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Arrays;
+
 import java.util.UUID;
 
 @Component
+//public class AuthenticationFilter extends OncePerRequestFilter {
 public class AuthenticationFilter {
 
     @Autowired
@@ -28,7 +27,7 @@ public class AuthenticationFilter {
     @Autowired
     private IUserService _userService;
 
-
+    //@Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
 
@@ -36,17 +35,19 @@ public class AuthenticationFilter {
 
         //DESATIVEI POIS NÃO CONSEGUI LIBERAR O FILTRO PARA O CORS
 
+//        response.setHeader("Access-Control-Allow-Origin", "*");
+//        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+//        response.setHeader("Access-Control-Max-Age", "3600");
+//        response.setHeader("Access-Control-Allow-Headers", "authorization, content-type, xsrf-token");
+//        response.addHeader("Access-Control-Expose-Headers", "xsrf-token");
+//        if ("OPTIONS".equals(request.getMethod())) {
+//            response.setStatus(HttpServletResponse.SC_OK);
+//        } else {
+//            filterChain.doFilter(request, response);
+//        }
 
 
 
-
-//                HttpServletResponse res = (HttpServletResponse) response;
-//        HttpServletRequest req = (HttpServletRequest) request;
-//
-//        res.setHeader("Access-Control-Allow-Origin", "*");
-//        res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
-//        res.setHeader("Access-Control-Max-Age", "3600");
-//        res.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept, x-requested-with, Cache-Control");
 
 //        if (request.getServletPath().contains("/api/v1/authentication")) {
 //            filterChain.doFilter(request, response);

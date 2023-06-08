@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface IFollowRepository extends MongoRepository<Follow, UUID> {
     Optional<Follow> getFollowerListByUserId(UUID userId);
+    Optional<Follow> getFollowingListByUserId(UUID userId);
 }

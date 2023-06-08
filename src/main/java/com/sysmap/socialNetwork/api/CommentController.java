@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping("/api/v1/post/comment")
+@RequestMapping("/api/v1/post/{postId}/comment")
 public class CommentController {
 
     @Autowired
     private ICommentService _commentService;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createComment(@RequestBody CreateCommentRequest request) {
-        var response = _commentService.createComment(request);
+    public ResponseEntity<String> createComment(@PathVariable String postId, @RequestBody CreateCommentRequest request) {
+        var response = _commentService.createComment(postId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

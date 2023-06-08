@@ -45,6 +45,11 @@ public class UserController {
     public ResponseEntity<FindAllUsersResponse> getAllUsers() {
         return ResponseEntity.ok().body(_userService.getAllUsers());
     }
+
+    @GetMapping("/get/all/follow")
+    public ResponseEntity<FindAllUsersFollowResponse> getAllUsersWithFollow() {
+        return ResponseEntity.ok().body(_userService.getAllUsersWithFollow());
+    }
     @PostMapping("/photo/upload")
     public ResponseEntity uploadPhotoProfile(@RequestParam("photo") MultipartFile photo) {
         try {

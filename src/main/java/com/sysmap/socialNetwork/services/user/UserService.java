@@ -3,12 +3,16 @@ package com.sysmap.socialNetwork.services.user;
 import com.sysmap.socialNetwork.data.IUserRepository;
 import com.sysmap.socialNetwork.entities.User;
 import com.sysmap.socialNetwork.services.fileUpload.IFileUploadService;
+import com.sysmap.socialNetwork.services.follow.IFollowService;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,6 +24,8 @@ public class UserService implements IUserService {
     private PasswordEncoder _passwordEncoder;
     @Autowired
     private IFileUploadService _fileUploadService;
+//    @Autowired
+//    private IFollowService _followService;
 
     public String createUser(CreateUserRequest request) {
         var user = new User(request.name, request.email);
@@ -75,19 +81,39 @@ public class UserService implements IUserService {
         return response;
     }
 
+    public FindAllUsersFollowResponse getAllUsersWithFollow() {
+        var allUsers = new FindAllUsersResponse(_userRepository.findAll());
+        ///////////////var allFollows = _followService.getAllFollows();
+        Object[] join = new Object[0];
+        join = ArrayUtils.addAll(join, allUsers);
+        ////////////////join = ArrayUtils.addAll(join, allFollows);
+        //allUsers.users.stream().map(user -> user.getId().)
+
+        List<FindAllUsersFollowResponse> teste = new ArrayList<>();
+
+
+//        var response = new FindAllUsersFollowResponse(
+//                allUsers.users.
+//        );
+        return null;
+    }
+
     public void uploadPhotoProfile(MultipartFile photo) throws Exception {
-        var user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        //var user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         var photoUri = "";
 
         try {
-            var fileName = user.getId() + "." + photo.getOriginalFilename().substring(photo.getOriginalFilename().lastIndexOf(".") + 1);
+            var fileName = "nome" + "." + photo.getOriginalFilename().substring(photo.getOriginalFilename().lastIndexOf(".") + 1);
             photoUri = _fileUploadService.upload(photo, fileName);
+            System.out.println("photouri :"+photoUri);
+            System.out.println("photouri :"+photoUri);
+            System.out.println("photouri :"+photoUri);
 
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
 
-        user.setPhotoUri(photoUri);
-        _userRepository.save(user);
+        //user.setPhotoUri(photoUri);
+        //_userRepository.save(user);
     }
 }
