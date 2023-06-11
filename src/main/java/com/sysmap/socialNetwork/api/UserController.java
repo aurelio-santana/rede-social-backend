@@ -47,7 +47,7 @@ public class UserController {
     }
 
     @GetMapping("/get/all/follow")
-    public ResponseEntity<FindAllUsersFollowResponse> getAllUsersWithFollow() {
+    public ResponseEntity<tempFindAllUsersFollowResponse> getAllUsersWithFollow() {
         return ResponseEntity.ok().body(_userService.getAllUsersWithFollow());
     }
     @PostMapping("/photo/upload")

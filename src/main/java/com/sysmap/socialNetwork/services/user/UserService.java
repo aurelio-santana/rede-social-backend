@@ -3,7 +3,6 @@ package com.sysmap.socialNetwork.services.user;
 import com.sysmap.socialNetwork.data.IUserRepository;
 import com.sysmap.socialNetwork.entities.User;
 import com.sysmap.socialNetwork.services.fileUpload.IFileUploadService;
-import com.sysmap.socialNetwork.services.follow.IFollowService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -72,6 +71,7 @@ public class UserService implements IUserService {
     }
 
     public User getUserById(UUID id) {
+        System.out.println("id"+id);
         return _userRepository.findUserById(id).get();
     }
 
@@ -81,7 +81,7 @@ public class UserService implements IUserService {
         return response;
     }
 
-    public FindAllUsersFollowResponse getAllUsersWithFollow() {
+    public tempFindAllUsersFollowResponse getAllUsersWithFollow() {
         var allUsers = new FindAllUsersResponse(_userRepository.findAll());
         //////var allFollows = _followService.getAllFollows();
         Object[] join = new Object[0];
@@ -89,7 +89,7 @@ public class UserService implements IUserService {
         //////join = ArrayUtils.addAll(join, allFollows);
         //allUsers.users.stream().map(user -> user.getId().)
 
-        List<FindAllUsersFollowResponse> teste = new ArrayList<>();
+        List<tempFindAllUsersFollowResponse> teste = new ArrayList<>();
 
 //        var response = new FindAllUsersFollowResponse(
 //                allUsers.users.

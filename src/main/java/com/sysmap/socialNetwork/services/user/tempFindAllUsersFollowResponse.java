@@ -3,7 +3,7 @@ package com.sysmap.socialNetwork.services.user;
 import java.util.List;
 import java.util.UUID;
 
-public class FindAllUsersFollowResponse {
+public class tempFindAllUsersFollowResponse {
     public UUID id;
     public String name;
     public String email;
@@ -11,8 +11,8 @@ public class FindAllUsersFollowResponse {
     public List<UUID> following;
     public List<UUID> followers;
 
-    public FindAllUsersFollowResponse(UUID id, String name, String email, String photoUri,
-                                      List<UUID> following, List<UUID> followers) {
+    public tempFindAllUsersFollowResponse(UUID id, String name, String email, String photoUri,
+                                          List<UUID> following, List<UUID> followers) {
         this.id = id;
         this.name = name;
         this.email = email;

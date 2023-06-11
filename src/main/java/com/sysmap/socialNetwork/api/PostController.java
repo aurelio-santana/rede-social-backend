@@ -18,8 +18,17 @@ public class PostController {
     @Autowired
     private IPostService _postService;
 
+//    @PostMapping("/create")
+//    public ResponseEntity<String> createPost(@RequestAttribute CreatePostRequest request) {
+//        var response = _postService.createPost(request);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+//    }
+
     @PostMapping("/create")
-    public ResponseEntity<String> createPost(@RequestBody CreatePostRequest request) {
+    public ResponseEntity<String> createPost(CreatePostRequest request) {
+        System.out.println("request"+ request);
+        System.out.println("request"+ request.fileList);
+
         var response = _postService.createPost(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

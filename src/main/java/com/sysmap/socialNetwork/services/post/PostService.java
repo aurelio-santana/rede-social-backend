@@ -43,6 +43,7 @@ public class PostService implements IPostService {
         List<String> fileNames = new ArrayList<>();
         List<String> photoUri = new ArrayList<>();
 
+        //Tratamento para multiplas imagens, ainda não funcional pois o módulo Image Picker utilizado no front não suporta múltiplas seleções.
         if (request.fileList != null) {
             fileNames = request.fileList.stream().map(multipartFile -> post.getId() + "-" + request.fileList.indexOf(multipartFile) + "." +
                             multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf(".") + 1)).

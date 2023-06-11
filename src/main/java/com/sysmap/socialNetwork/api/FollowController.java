@@ -1,15 +1,12 @@
 package com.sysmap.socialNetwork.api;
 
-import com.sysmap.socialNetwork.services.follow.FollowUserRequest;
-import com.sysmap.socialNetwork.services.follow.GetAllFollowsResponse;
-import com.sysmap.socialNetwork.services.follow.GetFollowsListByUserId;
-import com.sysmap.socialNetwork.services.follow.IFollowService;
+import com.sysmap.socialNetwork.services.follow.*;
+import com.sysmap.socialNetwork.services.user.tempFindAllUsersFollowResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,4 +35,10 @@ public class FollowController {
         var response = _followService.getFollowsListByUserId(UUID.fromString(userId));
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
+    @GetMapping("/get/userjoin")
+    public ResponseEntity<List<FindAllUsersFollowResponse>> getAllUsersWithFollow() {
+        return ResponseEntity.ok().body(_followService.getAllUsersWithFollow());
+    }
+
 }
