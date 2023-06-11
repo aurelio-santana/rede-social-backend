@@ -115,21 +115,7 @@ public class FollowService implements IFollowService {
     public List<FindAllUsersFollowResponse> getAllUsersWithFollow() {
         var allUsers = _userServce.getAllUsers().users;
         var allFollows = _followRepository.findAll();
-        System.out.println("allusers : "+allUsers);
-        System.out.println("allfollows : "+allFollows);
-        System.out.println("aqui : "+ _followRepository.getFollowerListByUserId(allUsers.get(0).getId()));
-
         List<FindAllUsersFollowResponse> result = new ArrayList<>();
-        //allUsers.forEach(user -> user.getId().equals(allFollows.contains(user.getId())) allusers.add );
-
-       // allUsers.forEach(i -> _followRepository.getFollowerListByUserId(i.getId()) == Optional.empty()
-
-
-
-        //allFollows.stream().map(f -> f.get);
-
-        List teste = new ArrayList<>();
-
 
         if  (!(allUsers.size() == allFollows.size())) {
             System.out.println("entrou, n funcionou");
@@ -142,34 +128,10 @@ public class FollowService implements IFollowService {
             }
         }
 
-
-
-
         allUsers.forEach(user -> result.add(new FindAllUsersFollowResponse(user.getId(), user.getName(), user.getEmail(), user.getPhotoUri(),
                 allFollows.stream().filter(i -> i.getUserId().equals(user.getId())).map(i -> i.getFollowing()).findFirst().orElse(null),
                 allFollows.stream().filter(i -> i.getUserId().equals(user.getId())).map(i -> i.getFollowers()).findFirst().orElse(null))) );
 
-//        allUsers.forEach(user -> result.add(new FindAllUsersFollowResponse(user.getId(), user.getName(), user.getEmail(), user.getPhotoUri(),
-//                teste, teste )));
-
-        result.forEach(i -> teste.add(i.toString()));
-
-        //var comment = post.getComment().stream().filter(id -> id.getId().equals(request.commentId)).findFirst().orElse(null);
-
-        System.out.println("results :"+ result);
-        System.out.println("teste :"+ teste.toString());
-
-
-        //Object[] join = new Object[0];
-        //join = ArrayUtils.addAll(join, allUsers);
-        //////join = ArrayUtils.addAll(join, allFollows);
-        //allUsers.users.stream().map(user -> user.getId().)
-
-       //List<FindAllUsersFollowResponse> teste = new ArrayList<>();
-
-//        var response = new FindAllUsersFollowResponse(
-//                allUsers.users.
-//        );
         return result;
     }
 

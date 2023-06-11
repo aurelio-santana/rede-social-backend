@@ -1,7 +1,6 @@
 package com.sysmap.socialNetwork.api;
 
 import com.sysmap.socialNetwork.services.follow.*;
-import com.sysmap.socialNetwork.services.user.tempFindAllUsersFollowResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

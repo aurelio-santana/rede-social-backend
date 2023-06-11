@@ -46,10 +46,6 @@ public class UserController {
         return ResponseEntity.ok().body(_userService.getAllUsers());
     }
 
-    @GetMapping("/get/all/follow")
-    public ResponseEntity<tempFindAllUsersFollowResponse> getAllUsersWithFollow() {
-        return ResponseEntity.ok().body(_userService.getAllUsersWithFollow());
-    }
     @PostMapping("/photo/upload")
     public ResponseEntity uploadPhotoProfile(@RequestParam("photo") MultipartFile photo) {
         try {

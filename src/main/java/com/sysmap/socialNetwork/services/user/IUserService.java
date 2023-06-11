@@ -14,6 +14,4 @@ public interface IUserService {
     User getUserById(UUID userId);
     FindUserResponse findUserByEmail(String email);
     void uploadPhotoProfile(MultipartFile photo) throws Exception;
-    tempFindAllUsersFollowResponse getAllUsersWithFollow();
-
 }

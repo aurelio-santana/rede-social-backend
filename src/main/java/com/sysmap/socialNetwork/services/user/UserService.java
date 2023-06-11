@@ -81,22 +81,6 @@ public class UserService implements IUserService {
         return response;
     }
 
-    public tempFindAllUsersFollowResponse getAllUsersWithFollow() {
-        var allUsers = new FindAllUsersResponse(_userRepository.findAll());
-        //////var allFollows = _followService.getAllFollows();
-        Object[] join = new Object[0];
-        join = ArrayUtils.addAll(join, allUsers);
-        //////join = ArrayUtils.addAll(join, allFollows);
-        //allUsers.users.stream().map(user -> user.getId().)
-
-        List<tempFindAllUsersFollowResponse> teste = new ArrayList<>();
-
-//        var response = new FindAllUsersFollowResponse(
-//                allUsers.users.
-//        );
-        return null;
-    }
-
     public void uploadPhotoProfile(MultipartFile photo) throws Exception {
         var user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         var photoUri = "";
