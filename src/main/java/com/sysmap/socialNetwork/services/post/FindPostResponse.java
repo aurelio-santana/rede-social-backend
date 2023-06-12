@@ -18,10 +18,11 @@ public class FindPostResponse {
     public UUID userId;
     public String name;
     public LocalDateTime createdAt;
+    public List<String> photoUri;
 
 
-    public FindPostResponse(UUID id, String title, String content, List<Comment> comment,
-                            List<UUID> like, Integer likes, UUID userId, String name, LocalDateTime createdAt) {
+    public FindPostResponse(UUID id, String title, String content, List<Comment> comment, List<UUID> like,
+                            Integer likes, UUID userId, String name, LocalDateTime createdAt, List<String> photoUri) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -31,6 +32,7 @@ public class FindPostResponse {
         this.userId = userId;
         this.name = name;
         this.createdAt = createdAt;
+        this.photoUri = photoUri;
     }
 }
 

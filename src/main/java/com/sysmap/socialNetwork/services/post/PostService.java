@@ -79,8 +79,8 @@ public class PostService implements IPostService {
     public FindPostResponse findPostById(String id) {
         System.out.println("id invalido"+id);
         var post = _postRepository.findPostById(UUID.fromString(id)).get();
-        var response = new FindPostResponse(post.getId(), post.getTitle(), post.getContent(), post.getComment(),
-                        post.getLike(), post.getLikes(), post.getUserId(), post.getName(), post.getCreatedAt());
+        var response = new FindPostResponse(post.getId(), post.getTitle(), post.getContent(), post.getComment(),post.getLike(),
+                post.getLikes(), post.getUserId(), post.getName(), post.getCreatedAt(), post.getPhotoUri());
         return response;
     }
 
